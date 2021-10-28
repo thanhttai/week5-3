@@ -1,40 +1,47 @@
-import React from 'react'
-import { Pagination } from 'react-bootstrap'
-const PaginationNews = ({ setCurrentPage, currentPage }) => {
-    let active = 1;
-    let items = [];
-    const handleClick = (number) => {
+import React from 'react';
+import { Pagination } from 'react-bootstrap';
 
-        setCurrentPage(number)
+const PaginationNews = ({ setCurrentPage, currentPage, totalPage }) => {
+
+    const handleFirst = () => {
+        setCurrentPage(1);
     }
-    for (let number = 1; number <= 3; number++) {
-        items.push(
-            <Pagination.Item key={number} onClick={() => handleClick(number)} active={number === active}>
-                {number}
-            </Pagination.Item>,
-        );
+    const handlePrev = () => {
+        setCurrentPage(currentPage - 1);
     }
-
-    console.log(items)
-    const paginationBasic = () => {
-
-
-
-        return (
-            <div>
-                {/* <Pagination id="">{items}</Pagination>
-                <br /> */}
-
-                <Pagination id="" size="lg">{items}</Pagination>
-                <br />
-
-                {/* <Pagination id="" size="sm">{items}</Pagination> */}
-            </div>
-        )
-
+    const handleLast = () => {
+        setCurrentPage(totalPage);
     }
+    const handleNext = () => {
+        setCurrentPage(currentPage + 1);
+    }
+    const handleNumber = (number) => {
+        setCurrentPage(number);
+        console.log(currentPage);
+    }
+    return (
+        <Pagination>
+            <Pagination.First disabled={currentPage === 1} onClick={handleFirst} />
+            <Pagination.Prev disabled={currentPage === 1} onClick={handlePrev} />
+            <Pagination.Item active={currentPage === 1} onClick={() => handleNumber(1)}>{1}</Pagination.Item>
+            {currentPage > 2 ? (
+                <>
+                    <Pagination.Ellipsis />
+                </>
+            ) : null}
 
-    return paginationBasic()
-}
+            {currentPage < totalPage && currentPage > 1 ? (
+                <Pagination.Item active={currentPage} onClick={() => handleNumber(currentPage)}>{currentPage}</Pagination.Item>
+            ) : null}
 
-export default PaginationNews
+            {totalPage > currentPage + 1 ? <Pagination.Ellipsis /> : null}
+
+            <Pagination.Item active={currentPage === totalPage} onClick={() => handleNumber(totalPage)} value={totalPage}>{totalPage}</Pagination.Item>
+            <Pagination.Next disabled={currentPage === totalPage} onClick={handleNext} />
+            <Pagination.Last disabled={currentPage === totalPage} onClick={handleLast} />
+        </Pagination>
+    );
+};
+
+
+export default PaginationNews;

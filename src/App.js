@@ -6,44 +6,44 @@ import SideMenu from './Components/SideMenu';
 import MainPage from './Components/MainPage';
 import PaginationNews from './Components/PaginationNews';
 
-// const myKey = process.env.REACT_APP_API_KEY;
-// console.log(myKey)
+const myKey = process.env.REACT_APP_API_KEY;
+
 const App = () => {
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const [data, setData] = useState([]);
   const [category, setCategory] = useState("business");
 
   useEffect(() => {
+    let limit = 5;
     const getData = async () => {
       let baseUrl = "https://newsapi.org/v2";
       let queryPath = `/everything?q=${query}`;
-      let categoryPath = `/top-headlines?country=us&category=${category}`;
-      let pagePath = `/top-headlines?country=us&page=${currentPage}`;
-      let keyPath = `&apiKey=fc7be1929def4fab9690a2ecd32ee815`;
-      let url = baseUrl + categoryPath + keyPath;
-
-
+      let path = `/top-headlines?country=us&page=${currentPage}`;
+      let categoryPath = `&category=${category}`;
+      let keyPath = `&apiKey=${myKey}`;
+      let url = baseUrl + path + keyPath;
+      // console.log(url);
       if (query) {
         url = baseUrl + queryPath + keyPath;
       } else if (category) {
-        url = baseUrl + categoryPath + keyPath;
-      } else if (currentPage) {
-        url = baseUrl + pagePath + keyPath;
+        url = baseUrl + path + categoryPath + keyPath;
       }
 
       try {
         const data = await fetch(url);
         const result = await data.json();
-        console.log(result)
+        setTotalPage(Math.ceil(result.totalResults) / limit);
         setData(result);
+        console.log("result", result);
+        console.log(url);
       } catch (error) {
         setData();
-
       }
     };
     getData();
-  }, [query, category, currentPage]);
+  }, [currentPage, query, category]);
 
 
   return (
@@ -53,9 +53,9 @@ const App = () => {
         <div className="row">
           <div className="col-3">
             <SideMenu setCategory={setCategory} />
-            <PaginationNews setCurrentPage={setCurrentPage} currentPage={currentPage} />
           </div>
           <div className="col-9">
+            <PaginationNews setCurrentPage={setCurrentPage} currentPage={currentPage} totalPage={totalPage} />
             <MainPage data={data} category={category} />
           </div>
         </div>
@@ -65,4 +65,3 @@ const App = () => {
 };
 
 export default App;
-
