@@ -1,11 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { useState, useEffect } from "react";
-import SearchBox from './Components/SearchBox';
-import SideMenu from './Components/SideMenu';
-import MainPage from './Components/MainPage';
-import PaginationNews from './Components/PaginationNews';
-
+import { Switch, Route } from 'react-router-dom';
+import Homepage from './Components/Homepage';
+import Categories from './pages/Categories';
 const myKey = process.env.REACT_APP_API_KEY;
 
 const App = () => {
@@ -48,18 +46,10 @@ const App = () => {
 
   return (
     <div className="App">
-      <SearchBox setQuery={setQuery} />
-      <div className="container">
-        <div className="row">
-          <div className="col-3">
-            <SideMenu setCategory={setCategory} />
-          </div>
-          <div className="col-9">
-            <PaginationNews setCurrentPage={setCurrentPage} currentPage={currentPage} totalPage={totalPage} />
-            <MainPage data={data} category={category} />
-          </div>
-        </div>
-      </div>
+      <Switch>
+        <Route exact path="/" component={Homepage} />
+        <Route path="/categories" component={Categories} />
+      </Switch>
     </div>
   );
 };

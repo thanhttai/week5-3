@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link, Route } from "react-router-dom"
 import {
     Navbar,
     Container,
@@ -6,9 +7,11 @@ import {
     FormControl,
     Button,
     Nav,
+    Dropdown,
+    DropdownButton
 } from 'react-bootstrap';
 
-const SearchBox = ({ setQuery }) => {
+const SearchBox = ({ setQuery, setCategory }) => {
     const [searchInput, setSearchInput] = useState("Your input here");
     const handleInput = (input) => {
         input.preventDefault();
@@ -18,6 +21,11 @@ const SearchBox = ({ setQuery }) => {
     const handleSubmit = () => {
         setQuery(searchInput);
     };
+
+    const handleCategory = (e) => {
+
+        setCategory(e.target.id);
+    }
 
     return (
         <Navbar bg="light" expand="lg">
@@ -31,7 +39,13 @@ const SearchBox = ({ setQuery }) => {
                         navbarScroll
                     >
                         <Nav.Link href="#action1">News</Nav.Link>
-                        <Nav.Link href="#action2">Link</Nav.Link>
+                        {/* <Nav.Link href="#action2">Link</Nav.Link> */}
+                        <DropdownButton id="dropdown-basic-button" title="Categories">
+                            <Dropdown.Item><Link to="/categories/Sports" id="Sports" onMouseDown={handleCategory} style={{ textDecoration: 'none', color: 'black' }}>Sports</Link></Dropdown.Item>
+                            <Dropdown.Item><Link to="/categories/Health" id="Health" onMouseDown={handleCategory} style={{ textDecoration: 'none', color: 'black' }}>Health</Link></Dropdown.Item>
+                            <Dropdown.Item><Link to="/categories/Science" id="Science" onMouseDown={handleCategory} style={{ textDecoration: 'none', color: 'black' }}>Science</Link></Dropdown.Item>
+
+                        </DropdownButton>
                     </Nav>
                     <Form className="d-flex">
                         <FormControl
