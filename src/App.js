@@ -4,6 +4,9 @@ import React, { useState, useEffect } from "react";
 import { Switch, Route } from 'react-router-dom';
 import Homepage from './Components/Homepage';
 import Categories from './pages/Categories';
+import Sports from './pages/Sports';
+import Health from './pages/Health';
+import Science from './pages/Science';
 const myKey = process.env.REACT_APP_API_KEY;
 
 const App = () => {
@@ -48,7 +51,10 @@ const App = () => {
     <div className="App">
       <Switch>
         <Route exact path="/" component={Homepage} />
-        <Route path="/categories" component={Categories} />
+        <Route exact path="/categories" component={Categories} />
+        <Route exact path="/categories/:id" component={Sports} />
+        <Route exact path="/categories/:id" component={Health} />
+        <Route exact path="/categories/:id" component={Science} />
       </Switch>
     </div>
   );

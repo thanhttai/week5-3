@@ -1,3 +1,18 @@
+// import React from 'react'
+import { useParams } from 'react-router'
+
+// const Sports = () => {
+//     const params = useParams()
+//     const { id } = params
+//     console.log(id)
+//     return (
+//         <div>
+
+//         </div>
+//     )
+// }
+
+// export default Sports
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import React, { useState, useEffect } from "react";
@@ -8,18 +23,20 @@ import PaginationNews from '../Components/PaginationNews';
 
 const myKey = process.env.REACT_APP_API_KEY;
 
-const Categories = () => {
+const Health = () => {
     const [query, setQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
     const [data, setData] = useState([]);
     const [category, setCategory] = useState("");
 
+    const params = useParams()
+    const { id } = params
     useEffect(() => {
         let limit = 5;
         const getData = async () => {
 
-            let url = `https://newsapi.org/v2/top-headlines?country=us&page=${currentPage}&category=${category}&apiKey=fc7be1929def4fab9690a2ecd32ee815`
+            let url = `https://newsapi.org/v2/top-headlines?country=us&page=${currentPage}&category=${id}&apiKey=fc7be1929def4fab9690a2ecd32ee815`
 
 
             try {
@@ -55,7 +72,8 @@ const Categories = () => {
     );
 };
 
-export default Categories;
+export default Health;
+
 
 
 
